@@ -4,3 +4,8 @@ requests
 scikit-learn
 joblib
 whisper
+opencv-python
+transformers 
+torch 
+pillow
+sentence-transformers

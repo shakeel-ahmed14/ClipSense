@@ -16,17 +16,23 @@ def create_embedding(text_list):
     return embedding
 
 def inference(prompt):
-    r = requests.post("http://localhost:11434/api/generate", json={
-        # "model": "deepseek-r1",
-        "model": "llama3.2",
-        "prompt": prompt,
-        "stream": False
-    })
+    r = requests.post(
+        "http://localhost:11434/api/generate",
+        json={
+            "model": "llama3.2",
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0,
+                "top_p": 1,
+                "seed": 42
+            }
+        }
+    )
+    return r.json()
+    # return response
 
-    response = r.json()
-    return response
-
-df = joblib.load('embeddings.joblib')
+df = joblib.load('multimodal_embeddings.joblib')
 
 
 incoming_query = input("Ask a Question: ")
@@ -35,22 +41,80 @@ question_embedding = create_embedding([incoming_query])[0]
 # Find similarities of question_embedding with other embeddings
 # print(np.vstack(df['embedding'].values))
 # print(np.vstack(df['embedding']).shape)
-similarities = cosine_similarity(np.vstack(df['embedding']), [question_embedding]).flatten()
-# print(similarities)
+text_similarities = cosine_similarity(
+    np.vstack(df['embedding']),
+    [question_embedding]
+).flatten()
+
+visual_similarities = []
+
+for visual_emb_list in df['visual_embeddings']:
+
+    if visual_emb_list is None or len(visual_emb_list) == 0:
+        visual_similarities.append(0)
+
+    else:
+        try:
+            visual_emb_array = np.array(visual_emb_list)
+
+            sim = cosine_similarity(
+                visual_emb_array,
+                [question_embedding]
+            ).max()
+
+            visual_similarities.append(sim)
+
+        except:
+            visual_similarities.append(0)
+
+
+visual_similarities = np.array(visual_similarities)
+
+# Combine both
+final_similarities = 0.7 * text_similarities + 0.3 * visual_similarities
+
+
 top_results = 5
-max_indx = similarities.argsort()[::-1][0:top_results]
-# print(max_indx)
-new_df = df.loc[max_indx] 
-# print(new_df[["title", "number", "text"]])
+max_indx = final_similarities.argsort()[::-1][0:top_results]
 
-prompt = f''' I have some cooking tutorials. Here are the video subtitle chunks containing video title, number, text at that time, the start time in seconds and end time in seconds timestamp of the chunk.
+new_df = df.loc[max_indx].reset_index(drop=True)
 
-{new_df[['title', 'number','start', 'end', 'text']].to_json(orient='records')}
------------------------------
+
+
+
+prompt = f'''
+You are an AI assistant helping users find events in cooking tutorial videos.
+
+Below are relevant video segments containing:
+
+- video title
+- timestamps
+- transcript
+- visual descriptions of frames
+
+VIDEO SEGMENTS:
+{new_df[['title','number','start','end','text','visual_captions']].to_json(orient='records', indent=2)}
+
+--------------------------------
+
+USER QUESTION:
 "{incoming_query}"
 
-User asked this question related to the video chunks, you have to answer where and how much it is relevant to the question in a human way(and don't mention the above format it is just for you). Also provide the timestamp and the particular video in which the question is answered. If user asks any irrelevant question, tell them to ask relevant question related to the cooking tutorials.
+INSTRUCTIONS:
+- Identify the most relevant video segment
+- Use transcript AND visual descriptions
+- Mention exact timestamp range
+- Mention video title
+- Explain clearly and naturally
+- If not found, say "This event was not found in the video"
+- ONLY use the provided video data
+- DO NOT guess or assume anything
+- If exact event not present, say "This event was not found in the video"
+- DO NOT invent timestamps
 '''
+
+
+
 with open("prompt.txt", "w") as f:
     f.write(prompt)
 
