@@ -9,3 +9,5 @@ transformers
 torch 
 pillow
 sentence-transformers
+fastapi
+uvicorn[standard]
