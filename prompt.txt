@@ -13,9 +13,39 @@ VIDEO SEGMENTS:
   {
     "title":"Learn How To Cook in Under 25 Minutes",
     "number":"2",
-    "start":16.64,
-    "end":30.16,
-    "text":" And by the end of this video, mark my words, you will be able to cook  so long as you follow the guidelines I'm about to give you.  Starting off with the basics of measuring.  This is incredibly important because it's the first place most people go wrong.  How do you measure ingredients to be correct?",
+    "start":1032.16,
+    "end":1042.88,
+    "text":" These are not the only ways.  Emulsions.  They help blend flavors together in a synchronous bite.  Maybe you want a special color, have it coat your palate in a certain way.  Emulsifying is the key, but emulsifications can be challenging.",
+    "visual_captions":[
+
+    ]
+  },
+  {
+    "title":"50 Food Mistakes You Need To Avoid",
+    "number":"1",
+    "start":763.46,
+    "end":772.54,
+    "text":" Adding all of your ingredients all at once.  If a recipe doesn't suggest to do that, don't do it.  You're likely going to ruin the final product.  So I've got multiple ingredients.  I've got wine.",
+    "visual_captions":[
+
+    ]
+  },
+  {
+    "title":"50 Food Mistakes You Need To Avoid",
+    "number":"1",
+    "start":203.34,
+    "end":212.9,
+    "text":" This rips and tears.  This is a surgical blade.  Not using enough salt or fat when cooking anything.  Most things need more salt and more fat than you think.  Remember that.",
+    "visual_captions":[
+
+    ]
+  },
+  {
+    "title":"50 Food Mistakes You Need To Avoid",
+    "number":"1",
+    "start":1222.44,
+    "end":1227.44,
+    "text":" Off, off, off.  Oven's off.  Hand in the oven.  It's cold.  It's cold.",
     "visual_captions":[
 
     ]
@@ -23,29 +53,9 @@ VIDEO SEGMENTS:
   {
     "title":"Learn How To Cook in Under 25 Minutes",
     "number":"2",
-    "start":0.0,
-    "end":16.64,
-    "text":" I hate when someone says I can't cook.  I never even went to culinary school, but I've worked in some of the best restaurants in America.  How'd that happen?  And not to sound like a broken record or the guy from Ratatouille, but anyone can cook.  So I'm going to distill down some of the core essentials to what I know about cooking.",
-    "visual_captions":[
-
-    ]
-  },
-  {
-    "title":"50 Food Mistakes You Need To Avoid",
-    "number":"1",
-    "start":0.0,
-    "end":19.0,
-    "text":" I think we can all agree that wasted time, gone forever, never to come back is awful.  And most people are afraid of that one mistake when they're cooking that takes all of their  time and effort and throws it out the window.  The problem is, nobody ever knows what that mistake is going to be until it happens.  Unless maybe you've worked in restaurants and you've had enough repetitions to know",
-    "visual_captions":[
-
-    ]
-  },
-  {
-    "title":"50 Food Mistakes You Need To Avoid",
-    "number":"1",
-    "start":19.0,
-    "end":30.02,
-    "text":" what those mistakes are.  And thankfully I have, so I'm going to be showing you the 50 mistakes that anybody can  make that will ruin your food and the solutions to all of them.  Our first and possibly most heinous mistake of the day.",
+    "start":236.76,
+    "end":249.64,
+    "text":" Typically, this would be used maybe in a soup and you're in a rush or it's something that's gonna get blended so it doesn't matter what it looks like.  A fine chop would just be slightly smaller than that.  And finally, a mince.  This is when you just keep on chopping it up until it's borderline a paste.  Many uses for that.",
     "visual_captions":[
 
     ]
@@ -55,7 +65,7 @@ VIDEO SEGMENTS:
 --------------------------------
 
 USER QUESTION:
-"when in the videos did a person in black gloves and gloves is dipping a sauce into a metal bowl?"
+"a man is using a blend in a blender"
 
 INSTRUCTIONS:
 - Identify the most relevant video segment

@@ -32,7 +32,7 @@ for file in files:
         print(f"🎧 Extracting: {tutorial_number} | {file_name}")
 
         subprocess.run(
-            ["ffmpeg", "-y", "-i", input_path, "-t", "30", "-vn", "-acodec", "libmp3lame", output_path],
+            ["ffmpeg", "-y", "-i", input_path, "-vn", "-acodec", "libmp3lame", output_path],
             check=True
         )
 
