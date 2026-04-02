@@ -1,0 +1,16 @@
+{
+  "videos": [
+    {
+      "file": "50-food-mistakes.mp4",
+      "ragTitle": "50 Food Mistakes You Need To Avoid",
+      "headline": "50 Food Mistakes You Need To Avoid",
+      "description": "Common cooking mistakes and how to fix them. Place your exported video as 50-food-mistakes.mp4 or change \"file\" here to match your filename."
+    },
+    {
+      "file": "learn-cook-25-minutes.mp4",
+      "ragTitle": "Learn How To Cook in Under 25 Minutes",
+      "headline": "Learn How To Cook in Under 25 Minutes",
+      "description": "Cooking fundamentals in under 25 minutes. Place your exported video as learn-cook-25-minutes.mp4 or update \"file\" in this manifest."
+    }
+  ]
+}

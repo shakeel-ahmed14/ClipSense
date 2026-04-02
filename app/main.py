@@ -1,16 +1,23 @@
 from __future__ import annotations
 
+import json
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
+
 import joblib
 import pandas as pd
 import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from app.config import settings
 from app.rag_service import query_rag
+
+BACKEND_ROOT = Path(__file__).resolve().parent.parent
+VIDEOS_DIR = BACKEND_ROOT / "videos"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -87,3 +94,55 @@ def api_query(body: QueryBody):
             status_code=502,
             detail=f"Upstream Ollama error: {e!s}. Ensure Ollama is running at {settings.ollama_base_url}.",
         ) from e
+
+
+def _video_entries_from_disk() -> list[dict]:
+    exts = {".mp4", ".webm", ".mkv", ".mov"}
+    entries: list[dict] = []
+    if not VIDEOS_DIR.is_dir():
+        return entries
+    for p in sorted(VIDEOS_DIR.iterdir()):
+        if p.is_file() and p.suffix.lower() in exts:
+            stem = p.stem
+            entries.append(
+                {
+                    "file": p.name,
+                    "ragTitle": stem,
+                    "headline": stem.replace("_", " "),
+                    "description": "",
+                }
+            )
+    return entries
+
+
+def _load_video_manifest_list() -> list[dict]:
+    if not VIDEOS_DIR.is_dir():
+        return []
+    manifest_path = VIDEOS_DIR / "manifest.json"
+    if manifest_path.is_file():
+        raw = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if isinstance(raw, list):
+            return raw
+        if isinstance(raw, dict) and "videos" in raw:
+            return list(raw["videos"])
+    return _video_entries_from_disk()
+
+
+@app.get("/api/videos")
+def list_videos():
+    """Videos served from backend/videos; optional manifest.json maps files to RAG titles."""
+    entries = _load_video_manifest_list()
+    out = []
+    for e in entries:
+        file = e.get("file")
+        if not file:
+            continue
+        row = {**e, "src": f"/videos/{file}"}
+        out.append(row)
+    return {"videos": out}
+
+
+if VIDEOS_DIR.is_dir():
+    app.mount("/videos", StaticFiles(directory=str(VIDEOS_DIR)), name="videos")
+else:
+    logger.warning("Video directory missing at %s — create it and add manifest.json or media files.", VIDEOS_DIR)
